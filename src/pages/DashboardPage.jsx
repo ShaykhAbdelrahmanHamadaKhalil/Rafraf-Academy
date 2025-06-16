@@ -1,13 +1,16 @@
 // src/pages/DashboardPage.jsx
 
 import React from 'react';
-import { Typography, Box, Paper, Grid, useTheme, Button } from '@mui/material';
+// --- التعديل هنا: تمت إضافة Avatar و Button و Divider للاستيراد ---
+import { Typography, Box, Paper, Grid, useTheme, Button, Divider, Avatar } from '@mui/material';
+
+// استخدام أيقونات MUI الـ Outlined لشكل أنظف
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
-// مكون البطاقة الإحصائية بتصميم جديد وأنيق
+// مكون البطاقة الإحصائية (لا يوجد تغيير هنا)
 const StatCard = ({ title, value, icon, color }) => {
     return (
         <Paper sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 3 }}>
@@ -25,11 +28,11 @@ const StatCard = ({ title, value, icon, color }) => {
 const DashboardPage = () => {
     const theme = useTheme();
     // إضافة تعريفات الألوان المخصصة في الثيم
-    theme.palette.success.lighter = 'rgba(40, 167, 69, 0.1)';
+    theme.palette.success.lighter = theme.palette.mode === 'light' ? 'rgba(40, 167, 69, 0.1)' : 'rgba(40, 167, 69, 0.2)';
     theme.palette.success.dark = '#198754';
-    theme.palette.info.lighter = 'rgba(23, 162, 184, 0.1)';
+    theme.palette.info.lighter = theme.palette.mode === 'light' ? 'rgba(23, 162, 184, 0.1)' : 'rgba(23, 162, 184, 0.2)';
     theme.palette.info.dark = '#0DCAF0';
-    theme.palette.warning.lighter = 'rgba(255, 193, 7, 0.1)';
+    theme.palette.warning.lighter = theme.palette.mode === 'light' ? 'rgba(255, 193, 7, 0.1)' : 'rgba(255, 193, 7, 0.2)';
     theme.palette.warning.dark = '#FFC107';
 
     return (
@@ -48,8 +51,9 @@ const DashboardPage = () => {
                 </Button>
             </Box>
 
+            {/* --- التعديل هنا: تمت إزالة خاصية "item" من مكونات Grid --- */}
             <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+                <Grid xs={12} md={4}>
                     <StatCard 
                         title="إجمالي الطلاب" 
                         value="150" 
@@ -57,7 +61,7 @@ const DashboardPage = () => {
                         color="success" 
                     />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid xs={12} md={4}>
                     <StatCard 
                         title="إجمالي المعلمين" 
                         value="12" 
@@ -65,7 +69,7 @@ const DashboardPage = () => {
                         color="info"
                     />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid xs={12} md={4}>
                     <StatCard 
                         title="الحلقات النشطة" 
                         value="25" 
@@ -75,7 +79,6 @@ const DashboardPage = () => {
                 </Grid>
             </Grid>
 
-            {/* قسم آخر يمكن إضافته لاحقًا */}
             <Paper sx={{ p: 3, mt: 4 }}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                     جدول الحلقات اليومي
