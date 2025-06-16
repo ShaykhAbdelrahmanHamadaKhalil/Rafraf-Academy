@@ -1,46 +1,40 @@
 // src/pages/DashboardPage.jsx
 
 import React from 'react';
-import { Typography, Box, Paper, Grid, Avatar } from '@mui/material';
+import { Typography, Box, Paper, Grid, Avatar, Button, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-// أيقونات للبطاقات
-import SchoolIcon from '@mui/icons-material/School';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import GroupsIcon from '@mui/icons-material/Groups';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+// أيقونات احترافية
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import CoPresentOutlinedIcon from '@mui/icons-material/CoPresentOutlined';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-// بيانات وهمية للرسم البياني
-const chartData = [
-  { name: 'يناير', students: 12 },
-  { name: 'فبراير', students: 19 },
-  { name: 'مارس', students: 25 },
-  { name: 'أبريل', students: 35 },
-  { name: 'مايو', students: 51 },
-  { name: 'يونيو', students: 62 },
-];
-
-// مكون البطاقة الإحصائية
-const StatCard = ({ title, value, icon, color }) => {
+// مكون البطاقة الإحصائية بتصميم جديد
+const StatCard = ({ title, value, icon, subtitle }) => {
     const theme = useTheme();
     return (
         <Paper 
+            variant="outlined"
             sx={{
                 p: 3,
                 display: 'flex',
-                alignItems: 'center',
+                flexDirection: 'column',
                 justifyContent: 'space-between',
+                height: '100%',
                 borderRadius: '16px',
+                borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
             }}
         >
-            <Box>
-                <Typography color="text.secondary" gutterBottom>{title}</Typography>
-                <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>{value}</Typography>
-            </Box>
-            <Avatar sx={{ bgcolor: color, width: 56, height: 56 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <Typography color="text.secondary" sx={{ fontWeight: '600' }}>{title}</Typography>
                 {icon}
-            </Avatar>
+            </Box>
+            <Box sx={{ mt: 2 }}>
+                <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>{value}</Typography>
+                <Typography variant="body2" color="text.secondary">{subtitle}</Typography>
+            </Box>
         </Paper>
     );
 };
@@ -53,53 +47,64 @@ const DashboardPage = () => {
         <Box>
             {/* رسالة الترحيب */}
             <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
-                أهلاً بعودتك، يا مدير!
+                لوحة التحكم
             </Typography>
             <Typography color="text.secondary" sx={{ mb: 4 }}>
-                إليك ملخص سريع لنشاط الأكاديمية.
+                أهلاً بعودتك، إليك آخر مستجدات الأكاديمية.
             </Typography>
 
-            {/* البطاقات الإحصائية */}
-            <Grid container spacing={4}>
-                <Grid item xs={12} sm={6} lg={3}>
-                    <StatCard title="إجمالي الطلاب" value="150" icon={<SchoolIcon />} color="#5a8a38" />
+            {/* البطاقات الإحصائية بالتصميم الجديد */}
+            <Grid container spacing={3}>
+                <Grid item xs={12} sm={6} md={3}>
+                    <StatCard 
+                        title="الطلاب" 
+                        value="150" 
+                        subtitle="+ 12 هذا الشهر" 
+                        icon={<SchoolOutlinedIcon sx={{ color: 'primary.main', fontSize: 32 }} />} 
+                    />
                 </Grid>
-                <Grid item xs={12} sm={6} lg={3}>
-                    <StatCard title="إجمالي المعلمين" value="12" icon={<SupervisorAccountIcon />} color="#3f51b5" />
+                <Grid item xs={12} sm={6} md={3}>
+                    <StatCard 
+                        title="المعلمون" 
+                        value="12" 
+                        subtitle="+ 2 هذا الشهر" 
+                        icon={<CoPresentOutlinedIcon sx={{ color: 'primary.main', fontSize: 32 }} />} 
+                    />
                 </Grid>
-                <Grid item xs={12} sm={6} lg={3}>
-                    <StatCard title="الحلقات النشطة" value="25" icon={<GroupsIcon />} color="#f57c00" />
+                <Grid item xs={12} sm={6} md={3}>
+                    <StatCard 
+                        title="الحلقات" 
+                        value="25" 
+                        subtitle="3 حلقات جديدة" 
+                        icon={<GroupsOutlinedIcon sx={{ color: 'primary.main', fontSize: 32 }} />} 
+                    />
                 </Grid>
-                <Grid item xs={12} sm={6} lg={3}>
-                    <StatCard title="أرباح الشهر" value="$5,400" icon={<MonetizationOnIcon />} color="#d32f2f" />
+                 <Grid item xs={12} sm={6} md={3}>
+                    <StatCard 
+                        title="الأرباح" 
+                        value="$5,400" 
+                        subtitle="آخر 30 يوم" 
+                        icon={<ReceiptLongOutlinedIcon sx={{ color: 'primary.main', fontSize: 32 }} />} 
+                    />
                 </Grid>
             </Grid>
 
-            {/* قسم الرسم البياني */}
-            <Paper sx={{ p: 3, mt: 5, borderRadius: '16px' }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3 }}>
-                    نمو عدد الطلاب الجدد (آخر 6 أشهر)
+            {/* قسم الإجراءات السريعة */}
+            <Paper variant="outlined" sx={{ p: 3, mt: 5, borderRadius: '16px', borderColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)' }}>
+                 <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    إجراءات سريعة
                 </Typography>
-                <Box sx={{ height: 300 }}>
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart
-                            data={chartData}
-                            margin={{ top: 5, right: 20, left: -10, bottom: 5 }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip
-                                contentStyle={{
-                                    backgroundColor: theme.palette.background.paper,
-                                    direction: 'rtl',
-                                    borderRadius: '8px'
-                                }}
-                            />
-                            <Legend />
-                            <Bar dataKey="students" name="طالب جديد" fill={theme.palette.primary.main} radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                    </ResponsiveContainer>
+                <Divider />
+                <Box sx={{ mt: 3, display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                    <Button variant="contained" startIcon={<AddCircleOutlineIcon />}>
+                        إضافة طالب جديد
+                    </Button>
+                     <Button variant="outlined" color="secondary" startIcon={<AddCircleOutlineIcon />}>
+                        إنشاء حلقة جديدة
+                    </Button>
+                     <Button variant="outlined" color="secondary" startIcon={<AddCircleOutlineIcon />}>
+                        إضافة معلم
+                    </Button>
                 </Box>
             </Paper>
         </Box>
