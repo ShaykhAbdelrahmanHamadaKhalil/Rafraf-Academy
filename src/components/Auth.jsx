@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
 import logo from '../assets/logo.png';
-// import birdsImage from '../assets/birds.png'; // <-- الخطوة 2: قم بإلغاء التعليق على هذا السطر بعد وضع الصورة
+import birdsImage from '../assets/birds.png'; // تأكد من أن الصورة موجودة بهذا المسار
 
 // استيراد المكونات من MUI
 import { 
@@ -57,7 +57,6 @@ const AuthPage = () => {
     };
 
     return (
-        // --- تعديل الخلفية الكبرى هنا ---
         <Box 
             component="main" 
             sx={{
@@ -65,10 +64,9 @@ const AuthPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                // --- التعديل الرئيسي هنا: الخلفية المتدرجة ---
-                // background: `url(${birdsImage}) no-repeat bottom left, linear-gradient(to top right, #e8f5e9, #ffffff)`,
-                background: `linear-gradient(to top right, #e8f5e9 30%, #ffffff 70%)`,
-                backgroundSize: 'cover',
+                background: `url(${birdsImage}) no-repeat center center, linear-gradient(to top right, #e8f5e9 30%, #ffffff 70%)`,
+                // --- التعديل الرئيسي هنا: طريقة عرض الصورتين (الطيور والخلفية) ---
+                backgroundSize: 'cover, cover',
             }}
         >
             <Container maxWidth="xs">
@@ -78,9 +76,8 @@ const AuthPage = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        padding: { xs: 3, md: 4 }, // تعديل الحشوة لتكون متجاوبة
+                        padding: { xs: 3, md: 4 },
                         borderRadius: 4,
-                        // --- التعديل الرئيسي هنا: إعادة النافذة للون الأبيض ---
                         backgroundColor: 'white',
                     }}
                 >
