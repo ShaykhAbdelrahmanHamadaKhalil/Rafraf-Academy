@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
 import logo from '../assets/logo.png';
-import birdsImage from '../assets/birds.png'; // تم التأكد من وجود مسار الصورة
+// --- تم إضافة مسارات الصور هنا بناءً على طلبك ---
+import desktopImage from '../assets/background.png'; 
+import mobileImage from '../assets/background-mobile.png'; 
 
 // استيراد المكونات والأيقونات من MUI
 import {
@@ -53,23 +55,20 @@ const AuthPage = () => {
             }
         }
     };
-
-    // أنماط مخصصة للحقول لضمان التباين العالي
+    
+    // أنماط الحقول
     const highContrastTextFieldStyles = {
         '& .MuiFilledInput-root': {
-            // --- التعديل الرئيسي هنا ---
-            backgroundColor: 'rgba(90, 138, 56, 0.3)', // الحالة الطبيعية: أخضر فاتح شفاف
+            backgroundColor: 'rgba(90, 138, 56, 0.3)',
             borderRadius: '12px',
             border: '1px solid rgba(255, 255, 255, 0.2)',
-            transition: 'background-color 0.3s ease', // تأثير انتقال ناعم
+            transition: 'background-color 0.3s ease',
             '&:before, &:after': { borderBottom: 'none' },
-            // عند مرور الماوس
             '&:hover': {
-                backgroundColor: 'rgba(0, 0, 0, 0.5)', // الحالة التفاعلية: رمادي (أسود شفاف)
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
-            // عند التركيز (الكتابة)
             '&.Mui-focused': {
-                backgroundColor: 'rgba(0, 0, 0, 0.5)', // الحالة التفاعلية: رمادي (أسود شفاف)
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
         },
         '& .MuiInputLabel-root': {
@@ -95,7 +94,11 @@ const AuthPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundImage: `url(${birdsImage})`,
+                // --- تم تطبيق الخلفيات المتجاوبة هنا ---
+                backgroundImage: {
+                    xs: `url(${mobileImage})`,   // خلفية الموبايل
+                    md: `url(${desktopImage})`,  // خلفية سطح المكتب
+                },
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,
@@ -138,11 +141,6 @@ const AuthPage = () => {
                             sx={highContrastTextFieldStyles}
                             margin="normal"
                             value={email} onChange={(e) => setEmail(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start"><MailOutlineIcon /></InputAdornment>
-                                ),
-                            }}
                         />
                         <TextField
                             required fullWidth
@@ -151,11 +149,6 @@ const AuthPage = () => {
                             sx={highContrastTextFieldStyles}
                             margin="normal"
                             value={password} onChange={(e) => setPassword(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start"><LockOpenIcon /></InputAdornment>
-                                ),
-                            }}
                         />
                         {isRegisterMode && (
                             <TextField
@@ -165,11 +158,6 @@ const AuthPage = () => {
                                 sx={highContrastTextFieldStyles}
                                 margin="normal"
                                 value={invitationCode} onChange={(e) => setInvitationCode(e.target.value)}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start"><VpnKeyIcon /></InputAdornment>
-                                    ),
-                                }}
                             />
                         )}
                         <Button
