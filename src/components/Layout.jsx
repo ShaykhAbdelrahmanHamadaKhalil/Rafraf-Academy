@@ -1,22 +1,21 @@
 // src/components/Layout.jsx
 
 import React, { useState } from 'react';
-import { Box, Drawer, AppBar, Toolbar, IconButton, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText, useTheme, Tooltip, Divider } from '@mui/material';
+import { Box, Drawer, AppBar, Toolbar, IconButton, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText, useTheme, Tooltip, Divider, ListSubheader } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import CoPresentOutlinedIcon from '@mui/icons-material/CoPresentOutlined';
-import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
-import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
-import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
-import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import logo from '../assets/logo.png';
 import { ColorModeContext } from '../App'; 
 
-const drawerWidth = 240;
+// استيراد الأيقونات الجديدة من مكتبة Tabler Icons
+import { 
+    IconLayoutDashboard, IconMessages, IconSettings, IconUserShield, 
+    IconSchool, IconUsers, IconKey, IconReceipt2 
+} from '@tabler/icons-react';
+
+
+const drawerWidth = 260;
 
 const Layout = ({ children }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -28,51 +27,49 @@ const Layout = ({ children }) => {
     };
 
     const commonItems = [
-        { text: 'لوحة التحكم', icon: <DashboardCustomizeOutlinedIcon />, path: '/dashboard' },
-        { text: 'الدردشة', icon: <ForumOutlinedIcon />, path: '/chat' },
+        { text: 'لوحة التحكم', icon: <IconLayoutDashboard size={20} />, path: '/dashboard' },
+        { text: 'الدردشة', icon: <IconMessages size={20} />, path: '/chat' },
     ];
-
     const adminItems = [
-        { text: 'المعلمون', icon: <CoPresentOutlinedIcon />, path: '/teachers' },
-        { text: 'الطلاب', icon: <SchoolOutlinedIcon />, path: '/students' },
-        { text: 'المشرفون', icon: <PeopleOutlineOutlinedIcon />, path: '/supervisors' },
-        { text: 'الأمور المالية', icon: <ReceiptLongOutlinedIcon />, path: '/finance' },
-        { text: 'رموز الدعوة', icon: <VpnKeyOutlinedIcon />, path: '/invitation-codes' },
+        { text: 'المعلمون', icon: <IconUserShield size={20} />, path: '/teachers' },
+        { text: 'الطلاب', icon: <IconSchool size={20} />, path: '/students' },
+        { text: 'المشرفون', icon: <IconUsers size={20} />, path: '/supervisors' },
+        { text: 'الأمور المالية', icon: <IconReceipt2 size={20} />, path: '/finance' },
+        { text: 'رموز الدعوة', icon: <IconKey size={20} />, path: '/invitation-codes' },
     ];
-    
-    const settingsItem = { text: 'الإعدادات', icon: <SettingsOutlinedIcon />, path: '/settings' };
+    const settingsItem = { text: 'الإعدادات', icon: <IconSettings size={20} />, path: '/settings' };
 
     const drawerContent = (
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 2, flexShrink: 0 }}>
-                 <Box component="img" src={logo} sx={{ height: 40, mr: 1 }} />
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '10px' }}>
+            <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                 <Box component="img" src={logo} sx={{ height: 45, mr: 1.5 }} />
                  <Typography variant="h6" noWrap sx={{fontWeight: 'bold'}}>أكاديمية رفرف</Typography>
-            </Toolbar>
-            <Divider />
-            <List sx={{ flexGrow: 1 }}>
+            </Box>
+            <List>
                 {commonItems.map((item) => (
-                    <ListItem key={item.text} disablePadding>
-                        <ListItemButton component="a" href={item.path}>
-                            <ListItemIcon sx={{color: 'text.secondary', minWidth: '40px'}}>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-                 <Divider sx={{ my: 1 }} />
-                 {adminItems.map((item) => (
-                    <ListItem key={item.text} disablePadding>
-                        <ListItemButton component="a" href={item.path}>
-                            <ListItemIcon sx={{color: 'text.secondary', minWidth: '40px'}}>{item.icon}</ListItemIcon>
+                    <ListItem key={item.text} disablePadding sx={{ my: 0.5 }}>
+                        <ListItemButton component="a" href={item.path} sx={{ borderRadius: '8px' }}>
+                            <ListItemIcon sx={{color: 'text.secondary'}}>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.text} />
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
-            <Divider />
-             <List sx={{ flexShrink: 0 }}>
+            <List subheader={<ListSubheader sx={{ bgcolor: 'transparent', color: 'text.secondary', fontWeight: 'bold' }}>الإدارة</ListSubheader>}>
+                 {adminItems.map((item) => (
+                    <ListItem key={item.text} disablePadding sx={{ my: 0.5 }}>
+                        <ListItemButton component="a" href={item.path} sx={{ borderRadius: '8px' }}>
+                            <ListItemIcon sx={{color: 'text.secondary'}}>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+            <Box sx={{ flexGrow: 1 }} />
+             <List>
                 <ListItem disablePadding>
-                    <ListItemButton component="a" href={settingsItem.path}>
-                        <ListItemIcon sx={{color: 'text.secondary', minWidth: '40px'}}>{settingsItem.icon}</ListItemIcon>
+                    <ListItemButton component="a" href={settingsItem.path} sx={{ borderRadius: '8px' }}>
+                        <ListItemIcon sx={{color: 'text.secondary'}}>{settingsItem.icon}</ListItemIcon>
                         <ListItemText primary={settingsItem.text} />
                     </ListItemButton>
                 </ListItem>
@@ -81,38 +78,43 @@ const Layout = ({ children }) => {
     );
 
     return (
-        <Box sx={{ display: 'flex', direction: 'rtl' }}>
-            {/* --- التعديل هنا: إزالة تحديد العرض ليصبح الشريط كاملاً --- */}
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Toolbar>
-                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, textAlign: 'right' }}>
-                        {/* يمكن وضع عنوان الصفحة هنا لاحقًا */}
-                     </Typography>
-
-                    <Tooltip title={theme.palette.mode === 'dark' ? "وضع فاتح" : "وضع داكن"}>
-                        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-                            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        <Box sx={{ display: 'flex', bgcolor: 'background.default', minHeight: '100vh' }}>
+            <AppBar 
+                position="fixed" 
+                elevation={0}
+                sx={{ 
+                    // الشريط العلوي بتصميم زجاجي
+                    bgcolor: 'rgba(28, 37, 54, 0.7)',
+                    backdropFilter: 'blur(8px)',
+                    borderBottom: '1px solid rgba(145, 158, 171, 0.24)',
+                }}
+            >
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
+                    <Box></Box> {/* عنصر فارغ لدفع الأيقونات لليسار */}
+                    <Box>
+                        <Tooltip title={theme.palette.mode === 'dark' ? "وضع فاتح" : "وضع داكن"}>
+                            <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+                                {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                            </IconButton>
+                        </Tooltip>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="end"
+                            onClick={handleDrawerToggle}
+                            sx={{ display: { md: 'none' } }}
+                        >
+                            <MenuIcon />
                         </IconButton>
-                    </Tooltip>
-                     <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="end"
-                        onClick={handleDrawerToggle}
-                        sx={{ display: { md: 'none' } }} // يظهر فقط على الشاشات الصغيرة والمتوسطة
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Drawer
                 anchor="right"
                 variant="permanent"
                 sx={{
-                    display: { xs: 'none', md: 'block' }, // يختفي على الشاشات الصغيرة
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+                    display: { xs: 'none', md: 'block' },
+                    '& .MuiDrawer-paper': { width: drawerWidth, bgcolor: 'background.default' },
                 }}
             >
                 {drawerContent}
@@ -124,16 +126,13 @@ const Layout = ({ children }) => {
                 onClose={handleDrawerToggle}
                 ModalProps={{ keepMounted: true }}
                 sx={{
-                    display: { xs: 'block', md: 'none' }, // يظهر فقط على الشاشات الصغيرة
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    display: { xs: 'block', md: 'none' },
+                    '& .MuiDrawer-paper': { width: drawerWidth, bgcolor: 'background.paper' },
                 }}
             >
                 {drawerContent}
             </Drawer>
-            <Box
-                component="main"
-                sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${drawerWidth}px)` }, bgcolor: 'background.default' }}
-            >
+            <Box component="main" sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${drawerWidth}px)` } }}>
                 <Toolbar />
                 {children}
             </Box>
