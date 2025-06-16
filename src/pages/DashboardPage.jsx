@@ -1,55 +1,34 @@
 // src/pages/DashboardPage.jsx
-
 import React from 'react';
-import { Typography, Box, Grid, Card, CardContent, Avatar, Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-
-// --- التعديل الرئيسي هنا: تم فصل استيراد اللغة عن المكون الرئيسي ---
-import { DataGrid } from '@mui/x-data-grid';
-import { arSD } from '@mui/x-data-grid/locales'; // المسار الصحيح لملف اللغة العربية
-
+import { Typography, Box, Paper, Grid, Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import AddIcon from '@mui/icons-material/Add';
 
-
-// مكون البطاقة الإحصائية بتصميم جديد
-const StatCard = ({ title, value, icon, color }) => {
+// مكون البطاقة الإحصائية بالتصميم الجديد
+const StatCard = ({ title, value, icon }) => {
     return (
-        <Card>
-            <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Box>
-                    <Typography color="text.secondary" gutterBottom>{title}</Typography>
-                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>{value}</Typography>
+        <Paper sx={{ p: 3, borderRadius: '16px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ flexGrow: 1 }}>
+                    <Typography color="text.secondary" sx={{ mb: 1 }}>{title}</Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{value}</Typography>
                 </Box>
-                <Avatar sx={{ bgcolor: color, width: 56, height: 56 }}>
+                 <Box sx={{ 
+                     width: 48, height: 48, borderRadius: '50%', display: 'flex', 
+                     alignItems: 'center', justifyContent: 'center',
+                     color: 'primary.main',
+                     bgcolor: (theme) => `rgba(${theme.palette.primary.mainChannel} / 0.12)`
+                 }}>
                     {icon}
-                </Avatar>
-            </CardContent>
-        </Card>
+                </Box>
+            </Box>
+        </Paper>
     );
 };
 
-// بيانات وهمية للجدول
-const rows = [
-  { id: 1, name: 'عبد الرحمن حمادة', class: 'حلقة الفرقان', teacher: 'الشيخ أحمد' },
-  { id: 2, name: 'محمد علي', class: 'حلقة النور', teacher: 'الشيخ ياسر' },
-  { id: 3, name: 'فاطمة الزهراء', class: 'حلقة الفرقان', teacher: 'الشيخ أحمد' },
-  { id: 4, name: 'عائشة محمود', class: 'حلقة الإحسان', teacher: 'الشيخ إبراهيم' },
-  { id: 5, name: 'يوسف خالد', class: 'حلقة النور', teacher: 'الشيخ ياسر' },
-];
-
-const columns = [
-  { field: 'name', headerName: 'اسم الطالب', width: 200 },
-  { field: 'class', headerName: 'اسم الحلقة', width: 200 },
-  { field: 'teacher', headerName: 'اسم المعلم', width: 200 },
-];
-
-
 const DashboardPage = () => {
-    const theme = useTheme();
-
     return (
         <Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
@@ -57,45 +36,43 @@ const DashboardPage = () => {
                     لوحة التحكم
                 </Typography>
                 <Button variant="contained" startIcon={<AddIcon />} size="large">
-                    إضافة حلقة جديدة
+                    إنشاء حلقة جديدة
                 </Button>
             </Box>
 
-            <Grid container spacing={4}>
-                <Grid item xs={12} sm={4}>
-                    <StatCard title="الطلاب" value="150" icon={<SchoolOutlinedIcon />} color="primary.main" />
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                    <StatCard 
+                        title="إجمالي الطلاب" 
+                        value="150" 
+                        icon={<SchoolOutlinedIcon />} 
+                    />
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                    <StatCard title="المعلمون" value="12" icon={<PeopleAltOutlinedIcon />} color="secondary.main" />
+                <Grid item xs={12} md={4}>
+                    <StatCard 
+                        title="إجمالي المعلمين" 
+                        value="12" 
+                        icon={<PeopleAltOutlinedIcon />} 
+                    />
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                    <StatCard title="الحلقات" value="25" icon={<GroupsOutlinedIcon />} color="warning.main" />
+                <Grid item xs={12} md={4}>
+                    <StatCard 
+                        title="الحلقات النشطة" 
+                        value="25" 
+                        icon={<GroupsOutlinedIcon />} 
+                    />
                 </Grid>
             </Grid>
 
-            <Card sx={{ p: 2, mt: 5 }}>
-                 <Typography variant="h6" sx={{ fontWeight: 'bold', p: 2 }}>
-                    آخر الطلاب المسجلين
+            {/* قسم آخر يمكن إضافته لاحقًا */}
+            <Paper sx={{ p: 3, mt: 4, borderRadius: '16px' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    جدول الحلقات اليومي
                 </Typography>
-                <Box sx={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        initialState={{
-                            pagination: {
-                                paginationModel: {
-                                    pageSize: 5,
-                                },
-                            },
-                        }}
-                        pageSizeOptions={[5]}
-                        checkboxSelection
-                        disableRowSelectionOnClick
-                        // --- هنا نستخدم المتغير الذي استوردناه بشكل صحيح ---
-                        localeText={arSD.components.MuiDataGrid.defaultProps.localeText}
-                    />
-                </Box>
-            </Card>
+                <Typography sx={{ mt: 2 }} color="text.secondary">
+                    (سيتم هنا عرض جدول الحلقات والمواعيد القادمة...)
+                </Typography>
+            </Paper>
         </Box>
     );
 };
