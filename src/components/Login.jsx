@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
 import { useNavigate, Link } from 'react-router-dom';
+import logo from '../assets/logo.png'; // <-- الخطوة 1: استيراد الشعار
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    // ... (rest of the function is unchanged)
     setError(null);
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -25,32 +27,28 @@ function Login() {
   return (
     <div style={styles.container}>
       <div style={styles.formContainer}>
+        
+        {/* -- العناصر الجديدة -- */}
+        <div style={styles.header}>
+          <img src={logo} alt="شعار أكاديمية رفرف" style={styles.logo} />
+          <h1 style={styles.academyName}>أكاديمية رفرف</h1>
+          <p style={styles.welcomeMessage}>أهلاً بك مجدداً في منصة إدارة التعلم</p>
+        </div>
+        {/* -- نهاية العناصر الجديدة -- */}
+
         <h2 style={styles.title}>تسجيل الدخول</h2>
         <form onSubmit={handleLogin} style={styles.form}>
+          {/* ... (form inputs are unchanged) ... */}
           <div style={styles.inputGroup}>
             <label style={styles.label}>البريد الإلكتروني</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={styles.input}
-            />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required style={styles.input} />
           </div>
           <div style={styles.inputGroup}>
             <label style={styles.label}>كلمة المرور</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              style={styles.input}
-            />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required style={styles.input} />
           </div>
           {error && <p style={styles.error}>{error}</p>}
-          <button type="submit" style={styles.button}>
-            دخول
-          </button>
+          <button type="submit" style={styles.button}>دخول</button>
         </form>
         <p style={styles.footerText}>
           ليس لديك حساب؟{' '}
@@ -63,15 +61,16 @@ function Login() {
   );
 }
 
-// Styles
+// -- الأنماط المحدثة --
 const styles = {
   container: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    minHeight: '100vh',
     backgroundColor: '#f0f2f5',
     fontFamily: 'Arial, sans-serif',
+    padding: '20px 0'
   },
   formContainer: {
     padding: '40px',
@@ -80,17 +79,38 @@ const styles = {
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
     width: '100%',
     maxWidth: '400px',
-    textAlign: 'right',
+    textAlign: 'center', // Center align header elements
+  },
+  header: {
+    marginBottom: '20px',
+  },
+  logo: {
+    width: '80px', // Adjust size as needed
+    height: '80px',
+    marginBottom: '10px',
+  },
+  academyName: {
+    fontSize: '28px',
+    color: '#005b96', // A professional blue color
+    margin: '0 0 5px 0',
+  },
+  welcomeMessage: {
+    fontSize: '16px',
+    color: '#666',
+    marginBottom: '20px',
   },
   title: {
     marginBottom: '24px',
-    fontSize: '24px',
+    fontSize: '22px',
     color: '#333',
     textAlign: 'center',
+    borderTop: '1px solid #eee',
+    paddingTop: '20px'
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
+    textAlign: 'right', // Keep form labels right-aligned
   },
   inputGroup: {
     marginBottom: '16px',
