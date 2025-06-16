@@ -3,7 +3,10 @@
 import React from 'react';
 import { Typography, Box, Grid, Card, CardContent, Avatar, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { DataGrid, arSD } from '@mui/x-data-grid';
+
+// --- التعديل الرئيسي هنا: تم فصل استيراد اللغة عن المكون الرئيسي ---
+import { DataGrid } from '@mui/x-data-grid';
+import { arSD } from '@mui/x-data-grid/locales'; // المسار الصحيح لملف اللغة العربية
 
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
@@ -78,10 +81,17 @@ const DashboardPage = () => {
                     <DataGrid
                         rows={rows}
                         columns={columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
+                        initialState={{
+                            pagination: {
+                                paginationModel: {
+                                    pageSize: 5,
+                                },
+                            },
+                        }}
+                        pageSizeOptions={[5]}
                         checkboxSelection
-                        disableSelectionOnClick
+                        disableRowSelectionOnClick
+                        // --- هنا نستخدم المتغير الذي استوردناه بشكل صحيح ---
                         localeText={arSD.components.MuiDataGrid.defaultProps.localeText}
                     />
                 </Box>
