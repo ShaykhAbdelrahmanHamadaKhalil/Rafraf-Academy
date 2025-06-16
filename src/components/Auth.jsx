@@ -1,13 +1,25 @@
+// src/components/Auth.jsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
-import logo from '../assets/logo.png'; // <-- تم التحديث إلى .jpg
+import logo from '../assets/logo.png';
+
+// استيراد المكونات من MUI
+import { 
+    Container, Box, Paper, Avatar, Typography, TextField, Button, Link, 
+    InputAdornment, Alert 
+} from '@mui/material';
+
+// استيراد الأيقونات من MUI
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 
 const validInvitationCodes = ["QURAN111", "RAFRAF222", "ADMIN333"];
 
 const AuthPage = () => {
-    // --- المنطق لم يتغير ---
     const [isRegisterMode, setIsRegisterMode] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,21 +27,15 @@ const AuthPage = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
-
-    const clearForm = () => {
-        setEmail(''); setPassword(''); setInvitationCode(''); setError(''); setSuccess('');
-    };
-    const handleModeToggle = () => {
-        setIsRegisterMode(!isRegisterMode);
-        clearForm();
-    };
+    
+    // ... المنطق البرمجي يبقى كما هو ...
+    const clearForm = () => { setEmail(''); setPassword(''); setInvitationCode(''); setError(''); setSuccess(''); };
+    const handleModeToggle = () => { setIsRegisterMode(!isRegisterMode); clearForm(); };
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(''); setSuccess('');
         if (isRegisterMode) {
-            if (!validInvitationCodes.includes(invitationCode)) {
-                setError("رمز الدعوة الذي أدخلته غير صالح."); return;
-            }
+            if (!validInvitationCodes.includes(invitationCode)) { setError("رمز الدعوة الذي أدخلته غير صالح."); return; }
             try {
                 await createUserWithEmailAndPassword(auth, email, password);
                 setSuccess('تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.');
@@ -48,135 +54,115 @@ const AuthPage = () => {
             }
         }
     };
-    
+
     return (
-        <div style={styles.page}>
-            <div style={styles.card}>
-                {/* --- القسم الأيمن (قسم النموذج) --- */}
-                <div style={styles.formPanel}>
-                    <h1 style={styles.academyName}>أكاديمية رفرف</h1>
-                    <p style={styles.tagline}>
-                        {isRegisterMode ? 'انضم إلينا لتبدأ رحلتك في تعلم القرآن' : 'أهلاً بك في منصة إدارة التعلم'}
-                    </p>
-                    <form onSubmit={handleSubmit} style={styles.form}>
-                        {success && <p style={styles.successMessage}>{success}</p>}
-                        <div style={styles.inputGroup}>
-                            <label htmlFor="email" style={styles.label}>البريد الإلكتروني</label>
-                            <input id="email" type="email" style={styles.input} value={email} onChange={(e) => setEmail(e.target.value)} required />
-                        </div>
-                        <div style={styles.inputGroup}>
-                            <label htmlFor="password" style={styles.label}>كلمة المرور</label>
-                            <input id="password" type="password" style={styles.input} value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        </div>
-                        {isRegisterMode && (
-                            <div style={styles.inputGroup}>
-                                <label htmlFor="inviteCode" style={styles.label}>رمز الدعوة</label>
-                                <input id="inviteCode" type="text" style={styles.input} value={invitationCode} onChange={(e) => setInvitationCode(e.target.value)} required />
-                            </div>
-                        )}
-                        {error && <p style={styles.errorMessage}>{error}</p>}
-                        <button type="submit" style={styles.button}>
-                            {isRegisterMode ? 'إنشاء الحساب' : 'تسجيل الدخول'}
-                        </button>
-                    </form>
-                    <div style={styles.footer}>
-                        <p onClick={handleModeToggle} style={styles.toggleLink}>
-                            {isRegisterMode ? 'لديك حساب بالفعل؟ سجل الدخول' : 'ليس لديك حساب؟ أنشئ حسابًا جديدًا'}
-                        </p>
-                    </div>
-                </div>
-                {/* --- القسم الأيسر (قسم الشعار) --- */}
-                <div style={styles.logoPanel}>
-                    <img src={logo} alt="شعار أكاديمية رفرف" style={styles.logo} />
-                </div>
-            </div>
-        </div>
+        <Container component="main" maxWidth="xs">
+            <Paper 
+                elevation={6} 
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: 4,
+                    borderRadius: 3,
+                }}
+            >
+                <Avatar 
+                    src={logo}
+                    variant="rounded"
+                    sx={{
+                        m: 1,
+                        width: 150, // حجم كبير للشعار
+                        height: 150, // حجم كبير للشعار
+                        bgcolor: 'transparent',
+                    }}
+                />
+                <Typography component="h1" variant="h5">
+                    {isRegisterMode ? 'إنشاء حساب جديد' : 'تسجيل الدخول'}
+                </Typography>
+                
+                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, width: '100%' }}>
+                    {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+                    {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+                    
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="البريد الإلكتروني"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <MailOutlineIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="كلمة المرور"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                         InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <LockOpenIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    {isRegisterMode && (
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="invitationCode"
+                            label="رمز الدعوة"
+                            type="text"
+                            id="invitationCode"
+                            value={invitationCode}
+                            onChange={(e) => setInvitationCode(e.target.value)}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <VpnKeyIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    )}
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        {isRegisterMode ? 'إنشاء الحساب' : 'دخول'}
+                    </Button>
+                    <Box textAlign="center">
+                         <Link component="button" variant="body2" onClick={handleModeToggle} type="button">
+                            {isRegisterMode
+                                ? "لديك حساب بالفعل؟ سجل الدخول"
+                                : "ليس لديك حساب؟ أنشئ حسابًا جديدًا"}
+                        </Link>
+                    </Box>
+                </Box>
+            </Paper>
+        </Container>
     );
 };
-
-// --- الأنماط المحدثة بألوان الشعار ---
-const PALETTE = {
-    green: '#5a8a38', // اللون الأخضر من الشعار
-    greenDark: '#4a7729', // درجة أغمق للتأثيرات
-    black: '#2d2d2d', // اللون الأسود/الداكن من الشعار
-    grey: '#6c757d', // رمادي للنصوص الثانوية
-    lightGrey: '#f8f9fa', // خلفية الصفحة
-    white: '#ffffff',
-    error: '#dc3545',
-    success: '#28a745',
-};
-
-const styles = {
-    page: {
-        display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh',
-        backgroundColor: PALETTE.lightGrey,
-        fontFamily: "'Cairo', sans-serif",
-    },
-    card: {
-        display: 'flex', flexDirection: 'row-reverse', width: '100%', maxWidth: '900px',
-        minHeight: '600px', backgroundColor: PALETTE.white, borderRadius: '15px',
-        boxShadow: '0 15px 40px rgba(0, 0, 0, 0.08)', overflow: 'hidden', margin: '20px',
-    },
-    formPanel: {
-        flex: 1.2, padding: '40px 50px', display: 'flex', flexDirection: 'column',
-        justifyContent: 'center', direction: 'rtl',
-    },
-    academyName: {
-        fontSize: '32px', fontWeight: '700', color: PALETTE.black,
-        textAlign: 'center', marginBottom: '10px',
-    },
-    tagline: {
-        fontSize: '16px', color: PALETTE.grey, textAlign: 'center', marginBottom: '30px',
-    },
-    form: { width: '100%' },
-    inputGroup: { marginBottom: '20px' },
-    label: {
-        display: 'block', marginBottom: '8px', fontSize: '14px',
-        color: PALETTE.black, fontWeight: '600',
-    },
-    input: {
-        width: '100%', padding: '12px 15px', border: '1px solid #ced4da',
-        borderRadius: '8px', fontSize: '16px', boxSizing: 'border-box',
-    },
-    button: {
-        width: '100%', padding: '14px', backgroundColor: PALETTE.green,
-        color: PALETTE.white, border: 'none', borderRadius: '8px',
-        fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', marginTop: '10px',
-        transition: 'background-color 0.2s',
-    },
-    footer: { textAlign: 'center', marginTop: '25px' },
-    toggleLink: {
-        color: PALETTE.green, cursor: 'pointer', fontSize: '14px', fontWeight: '600',
-    },
-    errorMessage: {
-        color: PALETTE.error, textAlign: 'center', fontSize: '14px', marginTop: '15px',
-    },
-    successMessage: {
-        color: PALETTE.success, textAlign: 'center', fontSize: '14px', marginBottom: '15px',
-    },
-    logoPanel: {
-        flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center',
-        background: `linear-gradient(to bottom, ${PALETTE.green}, ${PALETTE.greenDark})`,
-        padding: '40px',
-    },
-    logo: {
-        maxWidth: '80%', maxHeight: '80%', objectFit: 'contain',
-    },
-};
-
-const styleSheet = document.createElement("style");
-styleSheet.type = "text/css";
-styleSheet.innerText = `
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-    input:focus {
-        outline: none;
-        border-color: ${PALETTE.green};
-        box-shadow: 0 0 0 3px rgba(90, 138, 56, 0.25);
-    }
-    button:hover {
-        background-color: ${PALETTE.greenDark};
-    }
-`;
-document.head.appendChild(styleSheet);
 
 export default AuthPage;

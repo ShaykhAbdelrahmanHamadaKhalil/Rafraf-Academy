@@ -1,40 +1,34 @@
 // src/App.jsx
+
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/Home';
-import AuthPage from './components/Auth'; // <-- استيراد المكون الجديد
+import AuthPage from './components/Auth';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 
-// PrivateRoute لحماية الصفحات الداخلية
+// استيراد أدوات الثيم من MUI
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './theme'; // استيراد الثيم المخصص
+
+// ... مكونات PrivateRoute و PublicRoute تبقى كما هي ...
 const PrivateRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
-
   React.useEffect(() => {
-    // مراقبة حالة تسجيل الدخول
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user); // true if user is logged in, false otherwise
+      setIsAuthenticated(!!user);
       setLoading(false);
     });
-
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
-
-  if (loading) {
-    return <div style={{textAlign: 'center', marginTop: '50px'}}>جاري التحميل...</div>;
-  }
-
-  // إذا كان المستخدم مسجل دخوله، اعرض الصفحة المطلوبة
-  // وإلا، قم بتوجيهه إلى صفحة تسجيل الدخول الرئيسية
+  if (loading) return <div style={{fontFamily: 'Cairo', textAlign: 'center', marginTop: '50px'}}>جاري التحميل...</div>;
   return isAuthenticated ? children : <Navigate to="/" />;
 };
-
-// PublicRoute لمنع المستخدم المسجل من رؤية صفحة الدخول مرة أخرى
 const PublicRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
-
     React.useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setIsAuthenticated(!!user);
@@ -42,38 +36,36 @@ const PublicRoute = ({ children }) => {
         });
         return () => unsubscribe();
     }, []);
-
-    if (loading) {
-        return <div style={{textAlign: 'center', marginTop: '50px'}}>جاري التحميل...</div>;
-    }
-
-    // إذا كان المستخدم مسجل دخوله، وجهه للصفحة الرئيسية
-    // وإلا، اعرض صفحة تسجيل الدخول
+    if (loading) return <div style={{fontFamily: 'Cairo', textAlign: 'center', marginTop: '50px'}}>جاري التحميل...</div>;
     return isAuthenticated ? <Navigate to="/home" /> : children;
 };
 
+
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route 
-          path="/" 
-          element={
-            <PublicRoute>
-              <AuthPage />
-            </PublicRoute>
-          } 
-        />
-        <Route 
-          path="/home" 
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          } 
-        />
-      </Routes>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline /> {/* لتوحيد الأنماط الأساسية في المتصفحات */}
+      <div>
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <PublicRoute>
+                <AuthPage />
+              </PublicRoute>
+            } 
+          />
+          <Route 
+            path="/home" 
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            } 
+          />
+        </Routes>
+      </div>
+    </ThemeProvider>
   );
 }
 
