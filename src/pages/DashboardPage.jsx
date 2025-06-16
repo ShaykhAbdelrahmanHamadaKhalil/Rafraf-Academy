@@ -1,7 +1,7 @@
 // src/pages/DashboardPage.jsx
 
 import React from 'react';
-// --- التعديل هنا: تمت إضافة Avatar و Button و Divider للاستيراد ---
+// تم التأكد من وجود كل المكونات المطلوبة هنا
 import { Typography, Box, Paper, Grid, useTheme, Button, Divider, Avatar } from '@mui/material';
 
 // استخدام أيقونات MUI الـ Outlined لشكل أنظف
@@ -10,7 +10,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
-// مكون البطاقة الإحصائية (لا يوجد تغيير هنا)
+// مكون البطاقة الإحصائية
 const StatCard = ({ title, value, icon, color }) => {
     return (
         <Paper sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 3 }}>
@@ -51,7 +51,7 @@ const DashboardPage = () => {
                 </Button>
             </Box>
 
-            {/* --- التعديل هنا: تمت إزالة خاصية "item" من مكونات Grid --- */}
+            {/* --- التعديل هنا: تم حذف خاصية "item" من مكونات Grid --- */}
             <Grid container spacing={3}>
                 <Grid xs={12} md={4}>
                     <StatCard 
