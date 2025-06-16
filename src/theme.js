@@ -1,9 +1,9 @@
 // src/theme.js
-
 import { createTheme } from '@mui/material/styles';
 
 const PALETTE = {
     primary: '#5a8a38', 
+    secondary: '#03A9F4',
 };
 
 export const getDesignTokens = (mode) => ({
@@ -13,21 +13,24 @@ export const getDesignTokens = (mode) => ({
     primary: {
       main: PALETTE.primary,
     },
+    secondary: {
+      main: PALETTE.secondary,
+    },
     ...(mode === 'light'
       ? {
           background: {
-            default: '#F9FAFB', // رمادي فاتح جدًا للخلفية
-            paper: '#FFFFFF',   // أبيض نقي للبطاقات
+            default: '#F4F6F8',
+            paper: '#FFFFFF',
           },
           text: {
-            primary: '#111827', // أسود ناعم
-            secondary: '#6B7280', // رمادي متوسط
+            primary: '#343A40',
+            secondary: '#6C757D',
           },
         }
       : {
           background: {
-            default: '#111827', // رمادي داكن جدًا
-            paper: '#1F2937',   // لون أغمق للبطاقات
+            default: '#161C24',
+            paper: '#212B36',
           },
           text: {
             primary: '#FFFFFF',
@@ -36,68 +39,53 @@ export const getDesignTokens = (mode) => ({
         }),
   },
   typography: {
-    fontFamily: ['Cairo', 'Inter', 'sans-serif'].join(','),
+    fontFamily: ['Cairo', 'Public Sans', 'sans-serif'].join(','),
+    fontWeightRegular: 400,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
     h4: { fontWeight: 700, fontSize: '2rem' },
     h6: { fontWeight: 600 },
   },
+  shape: {
+    borderRadius: 8,
+  },
   components: {
     MuiAppBar: {
-        styleOverrides: {
-            root: {
-                boxShadow: 'none',
-                borderBottom: '1px solid',
-                borderColor: mode === 'light' ? '#E5E7EB' : 'rgba(145, 158, 171, 0.24)',
-                backgroundColor: mode === 'light' ? PALETTE.paper : '#1F2937CC', // شبه شفاف في الوضع الداكن
-                backdropFilter: mode === 'dark' ? 'blur(6px)' : 'none',
-            }
-        }
-    },
-    MuiDrawer: {
-        styleOverrides: {
-            paper: {
-                border: 'none',
-                backgroundColor: mode === 'light' ? '#FFFFFF' : '#1F2937',
-            }
-        }
-    },
-    MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: '8px',
-          textTransform: 'none',
-          fontWeight: 600,
+          boxShadow: 'none',
+          backgroundColor: 'transparent',
         },
-      }
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          border: 'none',
+          boxShadow: 'none',
+        },
+      },
     },
     MuiPaper: {
         styleOverrides: {
             root: {
                 backgroundImage: 'none',
-                borderRadius: '12px',
-                border: mode === 'light' ? '1px solid #E5E7EB' : 'none',
             }
         }
     },
     MuiCard: {
-      styleOverrides: {
-          root: {
-              boxShadow: 'none',
-          }
-      }
-    },
-    MuiListItemButton: {
         styleOverrides: {
             root: {
-                borderRadius: '8px',
-                margin: '4px 8px',
-                '&.Mui-selected': {
-                    backgroundColor: 'rgba(90, 138, 56, 0.08)',
-                    color: 'primary.main',
-                    fontWeight: 'bold',
-                    '& .MuiListItemIcon-root': {
-                        color: 'primary.main',
-                    }
-                }
+                boxShadow: '0 0 2px 0 rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12)',
+                borderRadius: '16px',
+            }
+        }
+    },
+    MuiButton: {
+        styleOverrides: {
+            root: {
+                textTransform: 'none',
+                fontWeight: 600,
             }
         }
     }

@@ -1,92 +1,91 @@
 // src/pages/DashboardPage.jsx
 
 import React from 'react';
-// تم التأكد من وجود كل المكونات المطلوبة هنا
-import { Typography, Box, Paper, Grid, useTheme, Button, Divider, Avatar } from '@mui/material';
+import { Typography, Box, Grid, Card, CardContent, Avatar, Button } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { DataGrid, arSD } from '@mui/x-data-grid';
 
-// استخدام أيقونات MUI الـ Outlined لشكل أنظف
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
-// مكون البطاقة الإحصائية
+
+// مكون البطاقة الإحصائية بتصميم جديد
 const StatCard = ({ title, value, icon, color }) => {
     return (
-        <Paper sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 3 }}>
-            <Avatar sx={{ bgcolor: `${color}.lighter`, color: `${color}.dark`, width: 64, height: 64, borderRadius: '8px' }}>
-                {icon}
-            </Avatar>
-            <Box>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{value}</Typography>
-                <Typography variant="body2" color="text.secondary">{title}</Typography>
-            </Box>
-        </Paper>
+        <Card>
+            <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box>
+                    <Typography color="text.secondary" gutterBottom>{title}</Typography>
+                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>{value}</Typography>
+                </Box>
+                <Avatar sx={{ bgcolor: color, width: 56, height: 56 }}>
+                    {icon}
+                </Avatar>
+            </CardContent>
+        </Card>
     );
 };
 
+// بيانات وهمية للجدول
+const rows = [
+  { id: 1, name: 'عبد الرحمن حمادة', class: 'حلقة الفرقان', teacher: 'الشيخ أحمد' },
+  { id: 2, name: 'محمد علي', class: 'حلقة النور', teacher: 'الشيخ ياسر' },
+  { id: 3, name: 'فاطمة الزهراء', class: 'حلقة الفرقان', teacher: 'الشيخ أحمد' },
+  { id: 4, name: 'عائشة محمود', class: 'حلقة الإحسان', teacher: 'الشيخ إبراهيم' },
+  { id: 5, name: 'يوسف خالد', class: 'حلقة النور', teacher: 'الشيخ ياسر' },
+];
+
+const columns = [
+  { field: 'name', headerName: 'اسم الطالب', width: 200 },
+  { field: 'class', headerName: 'اسم الحلقة', width: 200 },
+  { field: 'teacher', headerName: 'اسم المعلم', width: 200 },
+];
+
+
 const DashboardPage = () => {
     const theme = useTheme();
-    // إضافة تعريفات الألوان المخصصة في الثيم
-    theme.palette.success.lighter = theme.palette.mode === 'light' ? 'rgba(40, 167, 69, 0.1)' : 'rgba(40, 167, 69, 0.2)';
-    theme.palette.success.dark = '#198754';
-    theme.palette.info.lighter = theme.palette.mode === 'light' ? 'rgba(23, 162, 184, 0.1)' : 'rgba(23, 162, 184, 0.2)';
-    theme.palette.info.dark = '#0DCAF0';
-    theme.palette.warning.lighter = theme.palette.mode === 'light' ? 'rgba(255, 193, 7, 0.1)' : 'rgba(255, 193, 7, 0.2)';
-    theme.palette.warning.dark = '#FFC107';
 
     return (
         <Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-                <Box>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                        مرحباً بك مجدداً
-                    </Typography>
-                    <Typography color="text.secondary">
-                        كل شيء يبدو على ما يرام.
-                    </Typography>
-                </Box>
-                <Button variant="contained" startIcon={<AddIcon />}>
-                    إضافة طالب
+                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                    لوحة التحكم
+                </Typography>
+                <Button variant="contained" startIcon={<AddIcon />} size="large">
+                    إضافة حلقة جديدة
                 </Button>
             </Box>
 
-            {/* --- التعديل هنا: تم حذف خاصية "item" من مكونات Grid --- */}
-            <Grid container spacing={3}>
-                <Grid xs={12} md={4}>
-                    <StatCard 
-                        title="إجمالي الطلاب" 
-                        value="150" 
-                        icon={<SchoolOutlinedIcon sx={{ fontSize: 32 }} />} 
-                        color="success" 
-                    />
+            <Grid container spacing={4}>
+                <Grid item xs={12} sm={4}>
+                    <StatCard title="الطلاب" value="150" icon={<SchoolOutlinedIcon />} color="primary.main" />
                 </Grid>
-                <Grid xs={12} md={4}>
-                    <StatCard 
-                        title="إجمالي المعلمين" 
-                        value="12" 
-                        icon={<PeopleAltOutlinedIcon sx={{ fontSize: 32 }} />} 
-                        color="info"
-                    />
+                <Grid item xs={12} sm={4}>
+                    <StatCard title="المعلمون" value="12" icon={<PeopleAltOutlinedIcon />} color="secondary.main" />
                 </Grid>
-                <Grid xs={12} md={4}>
-                    <StatCard 
-                        title="الحلقات النشطة" 
-                        value="25" 
-                        icon={<GroupsOutlinedIcon sx={{ fontSize: 32 }} />} 
-                        color="warning" 
-                    />
+                <Grid item xs={12} sm={4}>
+                    <StatCard title="الحلقات" value="25" icon={<GroupsOutlinedIcon />} color="warning.main" />
                 </Grid>
             </Grid>
 
-            <Paper sx={{ p: 3, mt: 4 }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                    جدول الحلقات اليومي
+            <Card sx={{ p: 2, mt: 5 }}>
+                 <Typography variant="h6" sx={{ fontWeight: 'bold', p: 2 }}>
+                    آخر الطلاب المسجلين
                 </Typography>
-                <Typography sx={{ mt: 2 }} color="text.secondary">
-                    (سيتم هنا عرض جدول الحلقات والمواعيد القادمة...)
-                </Typography>
-            </Paper>
+                <Box sx={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        checkboxSelection
+                        disableSelectionOnClick
+                        localeText={arSD.components.MuiDataGrid.defaultProps.localeText}
+                    />
+                </Box>
+            </Card>
         </Box>
     );
 };
