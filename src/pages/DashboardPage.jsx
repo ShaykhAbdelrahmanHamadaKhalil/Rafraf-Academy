@@ -1,109 +1,89 @@
 // src/pages/DashboardPage.jsx
 
 import React from 'react';
-import { Typography, Box, Paper, Grid, useTheme } from '@mui/material';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { Typography, Box, Paper, Grid, useTheme, Button } from '@mui/material';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import AddIcon from '@mui/icons-material/Add';
 
-// استيراد الأيقونات الجديدة
-import { IconSchool, IconUserShield, IconUsers, IconReceipt2 } from '@tabler/icons-react';
-
-const chartData = [
-  { name: 'يناير', students: 12 }, { name: 'فبراير', students: 19 },
-  { name: 'مارس', students: 25 }, { name: 'أبريل', students: 35 },
-  { name: 'مايو', students: 51 }, { name: 'يونيو', students: 62 },
-];
-
-const StatCard = ({ title, value, icon, change, changeColor }) => {
+// مكون البطاقة الإحصائية بتصميم جديد وأنيق
+const StatCard = ({ title, value, icon, color }) => {
     return (
-        <Paper sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>{title}</Typography>
+        <Paper sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 3 }}>
+            <Avatar sx={{ bgcolor: `${color}.lighter`, color: `${color}.dark`, width: 64, height: 64, borderRadius: '8px' }}>
                 {icon}
+            </Avatar>
+            <Box>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{value}</Typography>
+                <Typography variant="body2" color="text.secondary">{title}</Typography>
             </Box>
-            <Box sx={{ mt: 3, flexGrow: 1 }}>
-                <Typography variant="h3" sx={{ fontWeight: 'bold' }}>{value}</Typography>
-            </Box>
-             <Typography variant="body2" component="span" sx={{ color: changeColor, fontWeight: '600' }}>
-                {change}
-            </Typography>
-            <Typography variant="body2" component="span" sx={{ color: 'text.secondary', ml: 1 }}>
-                عن الشهر الماضي
-            </Typography>
         </Paper>
     );
 };
 
 const DashboardPage = () => {
     const theme = useTheme();
+    // إضافة تعريفات الألوان المخصصة في الثيم
+    theme.palette.success.lighter = 'rgba(40, 167, 69, 0.1)';
+    theme.palette.success.dark = '#198754';
+    theme.palette.info.lighter = 'rgba(23, 162, 184, 0.1)';
+    theme.palette.info.dark = '#0DCAF0';
+    theme.palette.warning.lighter = 'rgba(255, 193, 7, 0.1)';
+    theme.palette.warning.dark = '#FFC107';
 
     return (
         <Box>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 5 }}>
-                أهلاً بك في لوحة تحكم رفرف
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+                <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                        مرحباً بك مجدداً
+                    </Typography>
+                    <Typography color="text.secondary">
+                        كل شيء يبدو على ما يرام.
+                    </Typography>
+                </Box>
+                <Button variant="contained" startIcon={<AddIcon />}>
+                    إضافة طالب
+                </Button>
+            </Box>
 
-            <Grid container spacing={4}>
-                {/* البطاقات الإحصائية */}
-                <Grid item xs={12} sm={6} md={3}>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
                     <StatCard 
-                        title="إجمالي الطلاب" value="150" 
-                        icon={<IconSchool size={32} color={theme.palette.primary.main} />}
-                        change="+12.5%" changeColor="success.main"
+                        title="إجمالي الطلاب" 
+                        value="150" 
+                        icon={<SchoolOutlinedIcon sx={{ fontSize: 32 }} />} 
+                        color="success" 
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={12} md={4}>
                     <StatCard 
-                        title="المعلمون النشطون" value="12" 
-                        icon={<IconUserShield size={32} color={theme.palette.info.main} />}
-                        change="+5.2%" changeColor="success.main"
+                        title="إجمالي المعلمين" 
+                        value="12" 
+                        icon={<PeopleAltOutlinedIcon sx={{ fontSize: 32 }} />} 
+                        color="info"
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                     <StatCard 
-                        title="الحلقات" value="25" 
-                        icon={<IconUsers size={32} color={theme.palette.warning.main} />}
-                        change="-2.1%" changeColor="error.main"
+                <Grid item xs={12} md={4}>
+                    <StatCard 
+                        title="الحلقات النشطة" 
+                        value="25" 
+                        icon={<GroupsOutlinedIcon sx={{ fontSize: 32 }} />} 
+                        color="warning" 
                     />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                     <StatCard 
-                        title="الأرباح" value="$5.4k" 
-                        icon={<IconReceipt2 size={32} color={theme.palette.error.main} />}
-                        change="+15%" changeColor="success.main"
-                    />
-                </Grid>
-                
-                {/* الرسم البياني */}
-                <Grid item xs={12} lg={12}>
-                     <Paper sx={{ p: 3, mt: 2 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3 }}>
-                            الطلاب الجدد
-                        </Typography>
-                        <Box sx={{ height: 350 }}>
-                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={chartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
-                                    <XAxis dataKey="name" stroke={theme.palette.text.secondary} tickLine={false} axisLine={false} />
-                                    <YAxis stroke={theme.palette.text.secondary} tickLine={false} axisLine={false} />
-                                    <Tooltip
-                                        cursor={{ fill: 'rgba(145, 158, 171, 0.16)' }}
-                                        contentStyle={{
-                                            backgroundColor: theme.palette.background.paper,
-                                            border: 'none',
-                                            borderRadius: '8px',
-                                            boxShadow: theme.shadows[3]
-                                        }}
-                                    />
-                                    <Bar dataKey="students" name="طالب جديد" barSize={24}>
-                                        {chartData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={theme.palette.primary.main} radius={[8, 8, 8, 8]} />
-                                        ))}
-                                    </Bar>
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </Box>
-                     </Paper>
                 </Grid>
             </Grid>
+
+            {/* قسم آخر يمكن إضافته لاحقًا */}
+            <Paper sx={{ p: 3, mt: 4 }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    جدول الحلقات اليومي
+                </Typography>
+                <Typography sx={{ mt: 2 }} color="text.secondary">
+                    (سيتم هنا عرض جدول الحلقات والمواعيد القادمة...)
+                </Typography>
+            </Paper>
         </Box>
     );
 };
