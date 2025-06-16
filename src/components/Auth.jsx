@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
 import logo from '../assets/logo.png';
-import birdsImage from '../assets/birds.png'; // <-- تم إضافة مسار الصورة هنا بشكل صحيح
+import birdsImage from '../assets/birds.png'; // تم التأكد من وجود مسار الصورة
 
 // استيراد المكونات والأيقونات من MUI
 import {
@@ -56,29 +56,32 @@ const AuthPage = () => {
 
     // أنماط مخصصة للحقول لضمان التباين العالي
     const highContrastTextFieldStyles = {
-        // تصميم الحقل نفسه
         '& .MuiFilledInput-root': {
-            backgroundColor: 'rgba(0, 0, 0, 0.4)', // خلفية داكنة شبه شفافة
+            // --- التعديل الرئيسي هنا ---
+            backgroundColor: 'rgba(90, 138, 56, 0.3)', // الحالة الطبيعية: أخضر فاتح شفاف
             borderRadius: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.2)', // إطار أبيض خفيف
-            '&:before, &:after': { borderBottom: 'none' }, // إزالة الخط السفلي
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            transition: 'background-color 0.3s ease', // تأثير انتقال ناعم
+            '&:before, &:after': { borderBottom: 'none' },
+            // عند مرور الماوس
             '&:hover': {
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)', // الحالة التفاعلية: رمادي (أسود شفاف)
+            },
+            // عند التركيز (الكتابة)
+            '&.Mui-focused': {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)', // الحالة التفاعلية: رمادي (أسود شفاف)
             },
         },
-        // تصميم عنوان الحقل (Label)
         '& .MuiInputLabel-root': {
-            color: 'rgba(255, 255, 255, 0.9)', // لون أبيض للعنوان
+            color: 'rgba(255, 255, 255, 0.9)',
             fontWeight: 'bold',
         },
         '& .MuiInputLabel-root.Mui-focused': {
-             color: 'white', // لون العنوان عند التركيز
+             color: 'white',
         },
-        // تصميم النص المكتوب داخل الحقل
         '& .MuiFilledInput-input': {
             color: 'white',
         },
-        // تصميم الأيقونات
         '& .MuiInputAdornment-root svg': {
             color: 'rgba(255, 255, 255, 0.9)',
         },
@@ -92,7 +95,6 @@ const AuthPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                // --- الخلفية مضافة هنا بشكل نهائي ---
                 backgroundImage: `url(${birdsImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -120,7 +122,7 @@ const AuthPage = () => {
                     <Typography component="h1" variant="h5" sx={{
                         fontWeight: 'bold',
                         color: 'white',
-                        textShadow: '0px 2px 5px rgba(0,0,0,0.7)', // ظل قوي للنص
+                        textShadow: '0px 2px 5px rgba(0,0,0,0.7)',
                     }}>
                         {isRegisterMode ? 'إنشاء حساب جديد' : 'تسجيل الدخول'}
                     </Typography>
