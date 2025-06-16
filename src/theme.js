@@ -7,57 +7,61 @@ const PALETTE = {
     black: '#2d2d2d',
 };
 
-const theme = createTheme({
-  direction: 'rtl', // تفعيل دعم الـ RTL
+// هذه الدالة ستنشئ الثيم بناءً على الوضع (فاتح أو داكن)
+export const getDesignTokens = (mode) => ({
+  direction: 'rtl',
   palette: {
+    mode, // 'light' or 'dark'
     primary: {
       main: PALETTE.green,
     },
-    text: {
-        primary: PALETTE.black,
-    }
+    ...(mode === 'light'
+      ? {
+          // قيم الوضع الفاتح
+          background: {
+            default: '#f8f9fa',
+            paper: '#ffffff',
+          },
+          text: {
+            primary: '#2d2d2d',
+            secondary: '#6c757d',
+          },
+        }
+      : {
+          // قيم الوضع الداكن
+          background: {
+            default: '#121212',
+            paper: '#1e1e1e',
+          },
+          text: {
+            primary: '#ffffff',
+            secondary: '#b0b0b0',
+          },
+        }),
   },
   typography: {
-    fontFamily: [
-      'Cairo',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif'
-    ].join(','),
-    h5: {
-        fontWeight: 700,
-    },
-    h6: {
-        fontWeight: 700,
-    },
-    button: {
-        fontWeight: 700,
-    }
+    fontFamily: ['Cairo', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
+    fontWeightBold: 700,
   },
   components: {
-    // تخصيص شكل الأزرار
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: 8,
           textTransform: 'none',
           fontSize: '16px',
-          padding: '10px 20px',
-        }
-      }
-    },
-    // تخصيص شكل حقول الإدخال
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          '& .MuiOutlinedInput-root': {
-            borderRadius: 8,
-          },
+          fontWeight: 700,
         },
       },
     },
+    MuiAppBar: {
+        styleOverrides: {
+            root: {
+                boxShadow: 'none',
+                borderBottom: '1px solid',
+                borderColor: mode === 'light' ? '#e0e0e0' : '#333',
+            }
+        }
+    }
   },
 });
-
-export default theme;
