@@ -5,15 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
 import logo from '../assets/logo.png';
-import birdsImage from '../assets/birds.png'; // تأكد من أن الصورة موجودة بهذا المسار
+import backgroundImage from '../assets/birds.png'; // <-- استيراد الصورة الجديدة
 
-// استيراد المكونات من MUI
+// استيراد المكونات والأيقونات من MUI
 import { 
     Container, Box, Paper, Avatar, Typography, TextField, Button, Link, 
     InputAdornment, Alert 
 } from '@mui/material';
-
-// استيراد الأيقونات من MUI
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
@@ -64,32 +62,35 @@ const AuthPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: `url(${birdsImage}) no-repeat center center, linear-gradient(to top right, #e8f5e9 30%, #ffffff 70%)`,
-                // --- التعديل الرئيسي هنا: طريقة عرض الصورتين (الطيور والخلفية) ---
-                backgroundSize: 'cover, cover',
+                // --- استخدام الصورة الجديدة كخلفية ---
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
             }}
         >
             <Container maxWidth="xs">
                 <Paper 
-                    elevation={8} 
+                    elevation={0} // --- إزالة الظل الحاد
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        padding: { xs: 3, md: 4 },
-                        borderRadius: 4,
-                        backgroundColor: 'white',
+                        padding: { xs: 3, md: 5 },
+                        // --- تعديل شكل المربع ---
+                        borderRadius: '24px', 
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)', // لون أبيض شبه شفاف
+                        backdropFilter: 'blur(5px)',
+                        border: '1px solid rgba(0, 0, 0, 0.05)',
                     }}
                 >
                     <Avatar 
                         src={logo}
                         variant="rounded"
                         sx={{
-                            m: 1,
-                            width: 200, 
-                            height: 200,
+                            width: 180, 
+                            height: 180,
                             bgcolor: 'transparent',
-                            marginBottom: 3,
+                            marginBottom: 2,
                         }}
                     />
                     <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold' }}>
@@ -97,44 +98,35 @@ const AuthPage = () => {
                     </Typography>
                     
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3, width: '100%' }}>
-                        {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-                        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+                        {success && <Alert severity="success" variant="filled" sx={{ mb: 2 }}>{success}</Alert>}
+                        {error && <Alert severity="error" variant="filled" sx={{ mb: 2 }}>{error}</Alert>}
                         
                         <TextField
-                            margin="normal" required fullWidth
-                            label="البريد الإلكتروني" autoComplete="email"
+                            required fullWidth
+                            label="البريد الإلكتروني"
+                            variant="filled" // --- استخدام الشكل الجديد للحقول ---
+                            sx={{ mb: 2, '& .MuiFilledInput-root': { borderRadius: '12px' } }}
                             value={email} onChange={(e) => setEmail(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start"><MailOutlineIcon /></InputAdornment>
-                                ),
-                            }}
                         />
                         <TextField
-                            margin="normal" required fullWidth
-                            label="كلمة المرور" type="password" autoComplete="current-password"
+                            required fullWidth
+                            label="كلمة المرور" type="password"
+                            variant="filled" // --- استخدام الشكل الجديد للحقول ---
+                            sx={{ mb: 2, '& .MuiFilledInput-root': { borderRadius: '12px' } }}
                             value={password} onChange={(e) => setPassword(e.target.value)}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start"><LockOpenIcon /></InputAdornment>
-                                ),
-                            }}
                         />
                         {isRegisterMode && (
                             <TextField
-                                margin="normal" required fullWidth
+                                required fullWidth
                                 label="رمز الدعوة" type="text"
+                                variant="filled" // --- استخدام الشكل الجديد للحقول ---
+                                sx={{ mb: 2, '& .MuiFilledInput-root': { borderRadius: '12px' } }}
                                 value={invitationCode} onChange={(e) => setInvitationCode(e.target.value)}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start"><VpnKeyIcon /></InputAdornment>
-                                    ),
-                                }}
                             />
                         )}
                         <Button
                             type="submit" fullWidth variant="contained"
-                            sx={{ mt: 3, mb: 2, padding: '12px 0' }}
+                            sx={{ mt: 2, mb: 2, padding: '12px 0', borderRadius: '12px' }}
                         >
                             {isRegisterMode ? 'إنشاء الحساب' : 'دخول'}
                         </Button>
