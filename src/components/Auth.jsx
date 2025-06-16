@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
-import logo from '../assets/logo.jpg'; // <-- تم التحديث إلى .jpg
+import logo from '../assets/logo.png'; // <-- تم التحديث إلى .jpg
 
 const validInvitationCodes = ["QURAN111", "RAFRAF222", "ADMIN333"];
 
