@@ -1,21 +1,17 @@
 // src/App.jsx
-
 import React, { useState, useMemo, createContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './components/Auth';
-import Layout from './components/Layout'; 
-import DashboardPage from './pages/DashboardPage';
-import FinancePage from './pages/FinancePage'; // <-- استيراد الملف الجديد
+import Layout from './components/Layout';
+import Home from './components/Home'; // سنستخدم Home.jsx فقط
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
-
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getDesignTokens } from './theme';
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
-// ... مكونات PrivateRoute و PublicRoute تبقى كما هي ...
 const PrivateRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
@@ -26,9 +22,10 @@ const PrivateRoute = ({ children }) => {
         });
         return () => unsubscribe();
     }, []);
-    if (loading) return <div style={{ fontFamily: 'Cairo', textAlign: 'center', marginTop: '50px' }}>جاري التحميل...</div>;
+    if (loading) return <div>جاري التحميل...</div>;
     return isAuthenticated ? children : <Navigate to="/" />;
 };
+
 const PublicRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
@@ -39,7 +36,7 @@ const PublicRoute = ({ children }) => {
         });
         return () => unsubscribe();
     }, []);
-    if (loading) return <div style={{ fontFamily: 'Cairo', textAlign: 'center', marginTop: '50px' }}>جاري التحميل...</div>;
+    if (loading) return <div>جاري التحميل...</div>;
     return isAuthenticated ? <Navigate to="/home" /> : children;
 };
 
@@ -59,23 +56,18 @@ function App() {
                 <CssBaseline />
                 <Routes>
                     <Route path="/" element={<PublicRoute><AuthPage /></PublicRoute>} />
-                    
-                    {/* المسارات المحمية */}
                     <Route 
-                        path="/dashboard" 
-                        element={<PrivateRoute><Layout><DashboardPage /></Layout></PrivateRoute>} 
+                        path="/home" 
+                        element={<PrivateRoute><Layout><Home /></Layout></PrivateRoute>} 
                     />
-                     <Route 
-                        path="/finance" 
-                        element={<PrivateRoute><Layout><FinancePage /></Layout></PrivateRoute>} 
+                    {/* أي مسارات مستقبلية ستعرض Home حاليًا حتى نبني صفحاتها */}
+                    <Route 
+                        path="*" 
+                        element={<PrivateRoute><Layout><Home /></Layout></PrivateRoute>} 
                     />
-                    {/* يمكنك إضافة باقي المسارات هنا بنفس الطريقة */}
-                    
-                    <Route path="/home" element={<Navigate to="/dashboard" />} />
                 </Routes>
             </ThemeProvider>
         </ColorModeContext.Provider>
     );
 }
-
 export default App;
