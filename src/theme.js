@@ -37,9 +37,9 @@ export const getDesignTokens = (mode) => ({
     },
   },
   typography: {
-    fontFamily: ['Tajawal', 'sans-serif'].join(','),
+    fontFamily: ['Cairo', 'sans-serif'].join(','), // تطبيق الخط الجديد
     fontWeightRegular: 400,
-    fontWeightMedium: 500,
+    fontWeightMedium: 600, // جعل الخط أعرض قليلاً
     fontWeightBold: 700,
     h4: { fontWeight: 700 },
     h5: { fontWeight: 700 },
@@ -56,8 +56,6 @@ export const getDesignTokens = (mode) => ({
       styleOverrides: {
         root: {
           boxShadow: 'none',
-          borderBottom: '1px solid',
-          borderColor: 'rgba(0, 0, 0, 0.12)',
         }
       }
     },
@@ -80,14 +78,6 @@ export const getDesignTokens = (mode) => ({
           }
         }
       }
-    },
-    MuiDrawer: {
-        styleOverrides: {
-            paper: {
-                borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
-                borderRight: 'none',
-            }
-        }
     },
     MuiListItemButton: {
       styleOverrides: {
