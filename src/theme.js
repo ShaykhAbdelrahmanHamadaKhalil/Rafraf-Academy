@@ -1,93 +1,109 @@
 // src/theme.js
 import { createTheme } from '@mui/material/styles';
 
+// لوحة الألوان الجديدة المستوحاة من الهوية البصرية
 const PALETTE = {
-    primary: '#6A994E', // درجة أخضر جديدة أكثر هدوءًا
+  primary: {
+    main: '#2d6a4f', // أخضر غامق من الشعار
+    light: '#40916c',
+    dark: '#1b4332',
+  },
+  secondary: {
+    main: '#b7e4c7', // أخضر فاتح من الشعار والخلفيات
+  },
+  background: {
+    default: '#f8f9fa', // رمادي فاتح جدًا للخلفية
+    paper: '#ffffff',   // أبيض نقي للبطاقات
+  },
+  text: {
+    primary: '#212529', // أسود داكن غير حاد
+    secondary: '#6c757d', // رمادي للنصوص الثانوية
+  }
 };
 
 export const getDesignTokens = (mode) => ({
   direction: 'rtl',
   palette: {
     mode,
-    primary: {
-      main: PALETTE.primary,
+    primary: PALETTE.primary,
+    secondary: PALETTE.secondary,
+    background: mode === 'light' ? PALETTE.background : {
+      default: '#121212',
+      paper: '#1E1E1E',
     },
-    ...(mode === 'light'
-      ? {
-          background: {
-            default: '#F4F6F8',
-            paper: '#FFFFFF',
-          },
-          text: {
-            primary: '#333333',
-            secondary: '#666666',
-          },
-          divider: '#E4E7EB',
-        }
-      : {
-          background: {
-            default: '#1A2035', // لون داكن جديد للخلفية
-            paper: '#2C344B',   // لون أغمق للبطاقات
-          },
-          text: {
-            primary: '#EAECEE',
-            secondary: '#A0AEC0',
-          },
-          divider: 'rgba(255, 255, 255, 0.12)',
-        }),
+    text: mode === 'light' ? PALETTE.text : {
+      primary: '#EAECEE',
+      secondary: '#A0AEC0',
+    },
   },
   typography: {
-    fontFamily: ['Tajawal', 'sans-serif'].join(','), // استخدام الخط الجديد
+    fontFamily: ['Tajawal', 'sans-serif'].join(','),
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
-    h4: { fontWeight: 700, fontSize: '2.125rem' },
-    h5: { fontWeight: 700, fontSize: '1.5rem' },
-    h6: { fontWeight: 600, fontSize: '1.25rem' },
+    h4: { fontWeight: 700 },
+    h5: { fontWeight: 700 },
+    h6: { fontWeight: 600 },
+    button: {
+      fontWeight: 700,
+    }
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 12, // حواف دائرية أكثر احترافية
   },
   components: {
-    MuiPaper: {
-        styleOverrides: {
-            root: {
-                backgroundImage: 'none',
-                boxShadow: 'none',
-                border: '1px solid',
-                borderColor: mode === 'light' ? '#E4E7EB' : 'rgba(255, 255, 255, 0.12)',
-            }
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+          borderBottom: '1px solid',
+          borderColor: 'rgba(0, 0, 0, 0.12)',
         }
+      }
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        }
+      }
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          fontWeight: 700,
           textTransform: 'none',
           boxShadow: 'none',
         },
         containedPrimary: {
-            '&:hover': {
-                boxShadow: '0 8px 16px 0 rgba(106, 153, 78, 0.24)',
-            }
+          '&:hover': {
+            boxShadow: `0 8px 16px 0 rgba(45, 106, 79, 0.24)`,
+          }
         }
       }
     },
-    MuiListItemButton: {
+    MuiDrawer: {
         styleOverrides: {
-            root: {
-                borderRadius: 8,
-                margin: '4px 12px',
-                '&.Mui-selected': {
-                    backgroundColor: `rgba(106, 153, 78, 0.16)`,
-                    color: 'primary.main',
-                    fontWeight: '700',
-                    '& .MuiListItemIcon-root': {
-                        color: 'primary.main',
-                    }
-                }
+            paper: {
+                borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+                borderRight: 'none',
             }
         }
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          margin: '4px 12px',
+          '&.Mui-selected': {
+            backgroundColor: `rgba(45, 106, 79, 0.08)`,
+            color: 'primary.dark',
+            fontWeight: '700',
+            '& .MuiListItemIcon-root': {
+              color: 'primary.dark',
+            }
+          }
+        }
+      }
     }
   },
 });
