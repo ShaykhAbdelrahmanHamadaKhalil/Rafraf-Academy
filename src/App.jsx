@@ -3,7 +3,7 @@ import React, { useState, useMemo, createContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './components/Auth';
 import Layout from './components/Layout';
-import Home from './components/Home'; // سنستخدم Home.jsx فقط
+import Home from './pages/DashboardPage.jsx';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
